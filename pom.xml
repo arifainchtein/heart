@@ -57,130 +57,15 @@
     <artifactId>commons-io</artifactId>
     <version>2.4</version>
 </dependency>
-<!-- BEGINNING OF MOQUETTE JAR, WHICH SHOULD BE ELIMINTATED ONCE 0.11 GETS TO MAVEN -->
-<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
 <dependency>
-    <groupId>io.netty</groupId>
-    <artifactId>netty-all</artifactId>
-    <version>4.1.12.Final</version>
+      <groupId>io.moquette</groupId>
+      <artifactId>moquette-broker</artifactId>
+      <version>0.11</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
-<dependency>
-    <groupId>com.hazelcast</groupId>
-    <artifactId>hazelcast</artifactId>
-    <version>3.5.4</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.9.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-core</artifactId>
-    <version>2.9.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-annotations</artifactId>
-    <version>2.9.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>1.7.25</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-core -->
-<dependency>
-    <groupId>io.dropwizard.metrics</groupId>
-    <artifactId>metrics-core</artifactId>
-    <version>3.2.2</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-jvm -->
-<dependency>
-    <groupId>io.dropwizard.metrics</groupId>
-    <artifactId>metrics-jvm</artifactId>
-    <version>3.2.2</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.librato.metrics/metrics-librato -->
-<dependency>
-    <groupId>com.librato.metrics</groupId>
-    <artifactId>metrics-librato</artifactId>
-    <version>5.1.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.mapdb/mapdb -->
-<dependency>
-    <groupId>org.mapdb</groupId>
-    <artifactId>mapdb</artifactId>
-    <version>1.0.8</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.librato.metrics/librato-java -->
-<dependency>
-    <groupId>com.librato.metrics</groupId>
-    <artifactId>librato-java</artifactId>
-    <version>2.1.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.h2database/h2-mvstore -->
-<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2-mvstore</artifactId>
-    <version>1.4.192</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-<dependency>
-    <groupId>commons-codec</groupId>
-    <artifactId>commons-codec</artifactId>
-    <version>1.10</version>
-</dependency>
-<!-- -->
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>SNAPSHOT</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>BROKER</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>H2</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>mapdb</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>hickary</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>bugsnag</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<!-- END OF MOQUETTE JAR, WHICH SHOULD BE ELIMINTATED ONCE 0.11 GETS TO MAVEN -->
-
-
-
     <dependency>
       <groupId>io.moquette</groupId>
       <artifactId>moquette-broker</artifactId>
-      <version>0.10</version>
+      <version>0.11</version>
 </dependency>
 <dependency>
     <groupId>org.apache.logging.log4j</groupId>
