@@ -160,7 +160,7 @@
     <artifactId>mapdb</artifactId>
     <version>0.11</version>
 </dependency>
-
+<!--
 <dependency>
     <groupId>io.moquette</groupId>
     <artifactId>hickary</artifactId>
@@ -172,6 +172,21 @@
     <artifactId>bugsnag</artifactId>
     <version>0.11</version>
 </dependency>
+-->
+
+<!-- https://mvnrepository.com/artifact/com.bugsnag/bugsnag -->
+<dependency>
+    <groupId>com.bugsnag</groupId>
+    <artifactId>bugsnag</artifactId>
+    <version>3.1.5</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+    <version>2.4.7</version>
+</dependency>
+
 
 <!-- END OF MOQUETTE JAR, WHICH SHOULD BE ELIMINTATED ONCE 0.11 GETS TO MAVEN -->
 
