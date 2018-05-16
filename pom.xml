@@ -16,10 +16,19 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 <repositories>
-
+<repository>
+    <id>bintray</id>
+    <url>https://jcenter.bintray.com</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+  </repository>
 	 <repository>
         <id>local-maven-repo</id>
-        <url>file:///home/pi/.m2</url>
+        <url>file:///Users/arifainchtein/.m2</url>
     </repository>
     <repository>
         <id>Eclipse Paho Repo</id>
@@ -127,7 +136,7 @@
     <artifactId>commons-codec</artifactId>
     <version>1.10</version>
 </dependency>
-<!-- 
+<!-- -->
 <dependency>
     <groupId>io.moquette</groupId>
     <artifactId>SNAPSHOT</artifactId>
@@ -163,7 +172,7 @@
     <artifactId>bugsnag</artifactId>
     <version>0.11</version>
 </dependency>
--->
+
 <!-- END OF MOQUETTE JAR, WHICH SHOULD BE ELIMINTATED ONCE 0.11 GETS TO MAVEN -->
 
 
@@ -171,7 +180,7 @@
     <dependency>
       <groupId>io.moquette</groupId>
       <artifactId>moquette-broker</artifactId>
-      <version>0.11</version>
+      <version>0.10</version>
 </dependency>
 <dependency>
     <groupId>org.apache.logging.log4j</groupId>
@@ -251,7 +260,6 @@
         <configuration>
         <outputDirectory>../../</outputDirectory>
           <archive>
-            <manifestEntries>
               <Premain-Class>com.teleonome.objectsizer.ObjectSizeFetcher</Premain-Class>
             </manifestEntries>
           </archive>
@@ -280,9 +288,8 @@
             </replacement>
         </replacements>
     </configuration>
-</plugin>  
- 
-    </plugins>
+</plugin> 
+  
 
 </build>
 </project>
