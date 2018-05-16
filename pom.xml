@@ -260,6 +260,7 @@
         <configuration>
         <outputDirectory>../../</outputDirectory>
           <archive>
+            <manifestEntries>
               <Premain-Class>com.teleonome.objectsizer.ObjectSizeFetcher</Premain-Class>
             </manifestEntries>
           </archive>
