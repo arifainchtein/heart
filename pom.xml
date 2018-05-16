@@ -290,7 +290,6 @@
         </replacements>
     </configuration>
 </plugin> 
-  
-
+</plugins>
 </build>
 </project>
