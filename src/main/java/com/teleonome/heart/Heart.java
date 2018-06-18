@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -149,6 +150,16 @@ public class Heart
 					logger.warn("stopping moquette mqtt broker..");
 					mqttBroker.stopServer();
 					logger.warn("moquette mqtt broker stopped");
+					ArrayList results;
+					try {
+						results = Utils.executeCommand("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
+						String data = "restarted the heart command response="  +String.join(", ", results);
+						logger.warn( data);
+					} catch (IOException | InterruptedException e) {
+						// TODO Auto-generated catch block
+						Utils.getStringException(e);
+					}
+					
 				}
 			});
 
