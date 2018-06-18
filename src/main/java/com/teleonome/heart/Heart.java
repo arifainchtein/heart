@@ -163,6 +163,7 @@ public class Heart
 //						String data = "restarted the heart command response="  +String.join(", ", results);
 //						logger.warn( data);
 						logger.warn("en of shutdown hook");
+						System.exit(0);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						logger.warn(Utils.getStringException(e));
