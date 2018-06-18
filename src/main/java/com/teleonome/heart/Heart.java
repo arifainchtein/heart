@@ -57,7 +57,7 @@ public class Heart
 
 	Logger logger;
 	int heartPid=0; 
-	 MqttAsyncClient client=null;;
+	 //MqttAsyncClient client=null;;
 	 PublisherListener aPublisherListener;
 	 private PostgresqlPersistenceManager aDBManager=null;
 	 
@@ -185,78 +185,78 @@ public class Heart
 
 	}
 
-	class MyCallBack implements  MqttCallback {
-        @Override
-        public void connectionLost(Throwable cause) {
-
-        }
-
-        @Override
-        public void messageArrived(String topic, MqttMessage message) throws Exception {
-        	logger.warn("Received message on topic: " + topic + " -> " + new String(message.getPayload()));
-        	if(topic.equals(TeleonomeConstants.HEART_TOPIC_UPDATE_FORM_REQUEST)) {
-        		
-    				
-        	}
-        }
-
-        
-      
-    	
-        
-        
-        public void blink() {
-        	 try {
-				 //
-				 // get the type of computer, because the command is different
-				 //
-        		 String computerModel = aPublisherListener.getComputerModel();
-				if(computerModel.equals(TeleonomeConstants.COMPUTER_MODEL_PI_3_MODEL_B)) {
-					Runtime.getRuntime().exec("sudo sh BlinkPi3.sh");
-				}else {
-					Runtime.getRuntime().exec("sudo sh Blink.sh");
-				}
-					
-				} catch (IOException e) {
-					// TODO Auto-gnanenerated catch block
-					e.printStackTrace();
-				}
-			 
-        }
-        
-        @Override
-        public void deliveryComplete(IMqttDeliveryToken token) {
-
-        }
-
-    }
+//	class MyCallBack implements  MqttCallback {
+//        @Override
+//        public void connectionLost(Throwable cause) {
+//
+//        }
+//
+//        @Override
+//        public void messageArrived(String topic, MqttMessage message) throws Exception {
+//        	logger.warn("Received message on topic: " + topic + " -> " + new String(message.getPayload()));
+//        	if(topic.equals(TeleonomeConstants.HEART_TOPIC_UPDATE_FORM_REQUEST)) {
+//        		
+//    				
+//        	}
+//        }
+//
+//        
+//      
+//    	
+//        
+//        
+//        public void blink() {
+//        	 try {
+//				 //
+//				 // get the type of computer, because the command is different
+//				 //
+//        		 String computerModel = aPublisherListener.getComputerModel();
+//				if(computerModel.equals(TeleonomeConstants.COMPUTER_MODEL_PI_3_MODEL_B)) {
+//					Runtime.getRuntime().exec("sudo sh BlinkPi3.sh");
+//				}else {
+//					Runtime.getRuntime().exec("sudo sh Blink.sh");
+//				}
+//					
+//				} catch (IOException e) {
+//					// TODO Auto-gnanenerated catch block
+//					e.printStackTrace();
+//				}
+//			 
+//        }
+//        
+//        @Override
+//        public void deliveryComplete(IMqttDeliveryToken token) {
+//
+//        }
+//
+//    }
 
 	
-	class MyMQTTListener implements  IMqttActionListener {
-    @Override
-    public void onSuccess(IMqttToken asyncActionToken) {
-        try {
-            client.subscribe(TeleonomeConstants.HEART_TOPIC_UPDATE_FORM_REQUEST, 0, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
-                }
-            });
-
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-    	logger.warn("On Failure, exception=" + Utils.getStringException(exception));
-    }
-}
+//	class MyMQTTListener implements  IMqttActionListener {
+//    @Override
+//    public void onSuccess(IMqttToken asyncActionToken) {
+//        try {
+//            client.subscribe(TeleonomeConstants.HEART_TOPIC_UPDATE_FORM_REQUEST, 0, null, new IMqttActionListener() {
+//                @Override
+//                public void onSuccess(IMqttToken asyncActionToken) {
+//                }
+//
+//                @Override
+//                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+//
+//                }
+//            });
+//
+//        } catch (MqttException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+//    	logger.warn("On Failure, exception=" + Utils.getStringException(exception));
+//    }
+//}
 	public static String getLocalDirectory(){
 		String hh;
 		Properties pp;
