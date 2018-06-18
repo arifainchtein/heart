@@ -143,7 +143,7 @@ public class Heart
 			
 
 
-			logger.warn("moquette mqtt broker started, press ctrl-c to shutdown..");
+			logger.warn("moquette mqtt broker started without client, press ctrl-c to shutdown..");
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
