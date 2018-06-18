@@ -154,6 +154,9 @@ public class Heart
 					try {
 						logger.warn("about to restart moquette");
 						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+						logger.warn("about to sleep for 3 sec");
+						
+						Thread.sleep(3000);
 						String data = "restarted the heart command response="  +String.join(", ", results);
 						logger.warn( data);
 					} catch (IOException | InterruptedException e) {
