@@ -152,12 +152,13 @@ public class Heart
 					logger.warn("moquette mqtt broker stopped");
 					ArrayList results;
 					try {
+						logger.warn("about to restart moquette");
 						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
 						String data = "restarted the heart command response="  +String.join(", ", results);
 						logger.warn( data);
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
-						Utils.getStringException(e);
+						logger.warn(Utils.getStringException(e));
 					}
 					
 				}
