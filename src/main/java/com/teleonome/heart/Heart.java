@@ -155,9 +155,11 @@ public class Heart
 						logger.warn("about to restart moquette");
 						//results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
 						Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
-						logger.warn("about to sleep for 3 sec");
-						
-						Thread.sleep(3000);
+						//logger.warn("about to sleep for 3 sec");
+						logger.warn("stopping moquette mqtt broker..");
+						mqttBroker.stopServer();
+    					logger.warn("moquette mqtt broker stopped");
+						//Thread.sleep(3000);
 //						String data = "restarted the heart command response="  +String.join(", ", results);
 //						logger.warn( data);
 						logger.warn("en of shutdown hook");
