@@ -153,12 +153,14 @@ public class Heart
 					ArrayList results;
 					try {
 						logger.warn("about to restart moquette");
-						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+						//results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+						Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
 						logger.warn("about to sleep for 3 sec");
 						
 						Thread.sleep(3000);
-						String data = "restarted the heart command response="  +String.join(", ", results);
-						logger.warn( data);
+//						String data = "restarted the heart command response="  +String.join(", ", results);
+//						logger.warn( data);
+						logger.warn("en of shutdown hook");
 					} catch (IOException | InterruptedException e) {
 						// TODO Auto-generated catch block
 						logger.warn(Utils.getStringException(e));
