@@ -147,9 +147,9 @@ public class Heart
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
-					logger.warn("stopping moquette mqtt broker..");
-					mqttBroker.stopServer();
-					logger.warn("moquette mqtt broker stopped");
+//					logger.warn("stopping moquette mqtt broker..");
+//					mqttBroker.stopServer();
+//					logger.warn("moquette mqtt broker stopped");
 					ArrayList results;
 					try {
 						logger.warn("about to restart moquette");
