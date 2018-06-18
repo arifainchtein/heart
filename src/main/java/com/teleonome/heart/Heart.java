@@ -128,17 +128,17 @@ public class Heart
 			//
 			String broker = "tcp://0.0.0.0:1883";
 			aDBManager = PostgresqlPersistenceManager.instance();
-			
-			try {
-				client = new MqttAsyncClient(broker, MqttAsyncClient.generateClientId(), new MqttDefaultFilePersistence());
-				MyMQTTListener aMyMQTTListener = new MyMQTTListener();
-	            client.connect(null,aMyMQTTListener );
-	            MyCallBack aMyCallBack = new MyCallBack();
-	            client.setCallback(aMyCallBack);
-			} catch (MqttException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			
+//			try {
+//				client = new MqttAsyncClient(broker, MqttAsyncClient.generateClientId(), new MqttDefaultFilePersistence());
+//				MyMQTTListener aMyMQTTListener = new MyMQTTListener();
+//	            client.connect(null,aMyMQTTListener );
+//	            MyCallBack aMyCallBack = new MyCallBack();
+//	            client.setCallback(aMyCallBack);
+//			} catch (MqttException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			
 			
 
