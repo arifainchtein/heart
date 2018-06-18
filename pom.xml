@@ -24,6 +24,16 @@
         <id>Eclipse Paho Repo</id>
         <url>https://repo.eclipse.org/content/repositories/paho-releases/</url>
     </repository>
+    <repository>
+    <id>bintray</id>
+    <url>https://jcenter.bintray.com</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+    <snapshots>
+      <enabled>false</enabled>
+    </snapshots>
+  </repository>
  	</repositories>
   <dependencies>
   <dependency>
@@ -47,123 +57,12 @@
     <artifactId>commons-io</artifactId>
     <version>2.4</version>
 </dependency>
-<!-- 
-BEGINNING OF MOQUETTE JAR, WHICH SHOULD BE ELIMINTATED ONCE 0.11 GETS TO MAVEN 
-<dependency>
-    <groupId>io.netty</groupId>
-    <artifactId>netty-all</artifactId>
-    <version>4.1.12.Final</version>
-</dependency>
-<dependency>
-    <groupId>com.hazelcast</groupId>
-    <artifactId>hazelcast</artifactId>
-    <version>3.5.4</version>
-</dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.9.1</version>
-</dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-core</artifactId>
-    <version>2.9.1</version>
-</dependency>
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-annotations</artifactId>
-    <version>2.9.0</version>
-</dependency>
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>1.7.25</version>
-</dependency>
-<dependency>
-    <groupId>io.dropwizard.metrics</groupId>
-    <artifactId>metrics-core</artifactId>
-    <version>3.2.2</version>
-</dependency>
-<dependency>
-    <groupId>io.dropwizard.metrics</groupId>
-    <artifactId>metrics-jvm</artifactId>
-    <version>3.2.2</version>
-</dependency>
-<dependency>
-    <groupId>com.librato.metrics</groupId>
-    <artifactId>metrics-librato</artifactId>
-    <version>5.1.0</version>
-</dependency>
-<dependency>
-    <groupId>org.mapdb</groupId>
-    <artifactId>mapdb</artifactId>
-    <version>1.0.8</version>
-</dependency>
-<dependency>
-    <groupId>com.librato.metrics</groupId>
-    <artifactId>librato-java</artifactId>
-    <version>2.1.0</version>
-</dependency>
-<dependency>
-    <groupId>com.h2database</groupId>
-    <artifactId>h2-mvstore</artifactId>
-    <version>1.4.192</version>
-</dependency>
-<dependency>
-    <groupId>commons-codec</groupId>
-    <artifactId>commons-codec</artifactId>
-    <version>1.10</version>
-</dependency>
 
 
 <dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>broker</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>H2</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>mapdb</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>hickary</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>bugsnag</artifactId>
-    <version>0.11</version>
-</dependency>
-
-<dependency>
-    <groupId>com.bugsnag</groupId>
-    <artifactId>bugsnag</artifactId>
-    <version>3.1.5</version>
-</dependency>
-<dependency>
-    <groupId>com.zaxxer</groupId>
-    <artifactId>HikariCP</artifactId>
-    <version>2.4.7</version>
-</dependency>
-
- END OF MOQUETTE JAR, WHICH SHOULD BE ELIMINTATED ONCE 0.11 GETS TO MAVEN 
- -->
-
-<dependency>
-    <groupId>io.moquette</groupId>
-    <artifactId>SNAPSHOT</artifactId>
-    <version>0.11</version>
+      <groupId>io.moquette</groupId>
+      <artifactId>moquette-broker</artifactId>
+      <version>0.11</version>
 </dependency>
 
 <dependency>
