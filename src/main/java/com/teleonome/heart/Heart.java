@@ -143,7 +143,7 @@ public class Heart
 			
 
 
-			logger.warn("moquette mqtt broker started without client, press ctrl-c to shutdown..");
+			logger.warn("moquette mqtt broker started without client1, press ctrl-c to shutdown..");
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
@@ -152,7 +152,7 @@ public class Heart
 					logger.warn("moquette mqtt broker stopped");
 					ArrayList results;
 					try {
-						results = Utils.executeCommand("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
+						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
 						String data = "restarted the heart command response="  +String.join(", ", results);
 						logger.warn( data);
 					} catch (IOException | InterruptedException e) {
