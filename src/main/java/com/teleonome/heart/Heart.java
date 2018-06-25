@@ -151,7 +151,7 @@ public class Heart
 //					mqttBroker.stopServer();
 //					logger.warn("moquette mqtt broker stopped");
 					ArrayList results;
-					logger.warn("stopping moquette mqtt broker..");
+					logger.warn("stopping moquette mqtt broker without restarting..");
 					mqttBroker.stopServer();
 					logger.warn("moquette mqtt broker stopped sleeping 5");
 					try {
@@ -160,16 +160,16 @@ public class Heart
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					try {
-						logger.warn("about to restart moquette");
-						//results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
-						Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
-						logger.warn("en of shutdown hook");
-						System.exit(0);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						logger.warn(Utils.getStringException(e));
-					}
+//					try {
+//						logger.warn("about to restart moquette");
+//						//results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+//						Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
+//						logger.warn("en of shutdown hook");
+//						System.exit(0);
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						logger.warn(Utils.getStringException(e));
+//					}
 					
 				}
 			});
