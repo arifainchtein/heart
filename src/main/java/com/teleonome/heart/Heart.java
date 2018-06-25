@@ -160,17 +160,22 @@ public class Heart
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-//					try {
-//						logger.warn("about to restart moquette");
-//						//results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
-//						Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
-//						logger.warn("en of shutdown hook");
-//						System.exit(0);
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						logger.warn(Utils.getStringException(e));
-//					}
-					
+					try {
+						logger.warn("about to restart heart");
+						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+						//Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
+						String data = "Restart hear command response="  +String.join(", ", results);
+						logger.warn( data);
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						logger.warn(Utils.getStringException(e));
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					logger.warn( "About to ezit the bad instance of the heart");
+					System.exit(0);
 				}
 			});
 
