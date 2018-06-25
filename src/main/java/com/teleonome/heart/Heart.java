@@ -151,17 +151,19 @@ public class Heart
 //					mqttBroker.stopServer();
 //					logger.warn("moquette mqtt broker stopped");
 					ArrayList results;
+					logger.warn("stopping moquette mqtt broker..");
+					mqttBroker.stopServer();
+					logger.warn("moquette mqtt broker stopped sleeping 5");
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					try {
 						logger.warn("about to restart moquette");
 						//results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
 						Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
-						//logger.warn("about to sleep for 3 sec");
-						logger.warn("stopping moquette mqtt broker..");
-						mqttBroker.stopServer();
-    					logger.warn("moquette mqtt broker stopped");
-						//Thread.sleep(3000);
-//						String data = "restarted the heart command response="  +String.join(", ", results);
-//						logger.warn( data);
 						logger.warn("en of shutdown hook");
 						System.exit(0);
 					} catch (IOException e) {
