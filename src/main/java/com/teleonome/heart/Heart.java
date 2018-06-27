@@ -147,34 +147,31 @@ public class Heart
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
-//					logger.warn("stopping moquette mqtt broker..");
-//					mqttBroker.stopServer();
-//					logger.warn("moquette mqtt broker stopped");
-					ArrayList results;
+//					ArrayList results;
 					logger.warn("stopping moquette mqtt broker without restarting..");
 					mqttBroker.stopServer();
 					logger.warn("moquette mqtt broker stopped sleeping 5");
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						logger.warn("about to restart heart");
-						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
-						//Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
-						String data = "Restart hear command response="  +String.join(", ", results);
-						logger.warn( data);
-						
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						logger.warn(Utils.getStringException(e));
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					logger.warn( "About to ezit the bad instance of the heart");
+//					try {
+//						Thread.sleep(5000);
+//					} catch (InterruptedException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//					try {
+//						logger.warn("about to restart heart");
+//						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+//						//Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
+//						String data = "Restart hear command response="  +String.join(", ", results);
+//						logger.warn( data);
+//						
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						logger.warn(Utils.getStringException(e));
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					logger.warn( "About to ezit the bad instance of the heart");
 					System.exit(0);
 				}
 			});
