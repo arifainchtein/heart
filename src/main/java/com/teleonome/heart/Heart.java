@@ -150,7 +150,7 @@ public class Heart
 //					ArrayList results;
 					logger.warn("stopping moquette mqtt broker without restarting..");
 					mqttBroker.stopServer();
-					logger.warn("moquette mqtt broker stopped sleeping 5");
+					logger.warn("moquette mqtt broker stopped sleeping");
 //					try {
 //						Thread.sleep(5000);
 //					} catch (InterruptedException e1) {
