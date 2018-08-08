@@ -117,7 +117,8 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					//
 					// this messages comes from a browser
 					//	
-					String string = message.getPayload();
+					ByteBuf m_buffer = message.getPayload();
+					String string = m_buffer.toString(charset);
 					logger.debug("received payload=" + string);
 					JSONObject payloadJSONObject = new JSONObject(string);
 	        		String identityPointer = payloadJSONObject.getString(TeleonomeConstants.TELEONOME_IDENTITY_LABEL);
