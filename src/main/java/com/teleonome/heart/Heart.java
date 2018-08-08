@@ -172,7 +172,7 @@ public class Heart
 //						e.printStackTrace();
 //					}
 //					logger.warn( "About to ezit the bad instance of the heart");
-					System.exit(0);
+					//System.exit(0);
 				}
 			});
 
