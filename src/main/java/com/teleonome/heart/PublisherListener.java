@@ -32,6 +32,8 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	//JSONObject currentPulse;
 	 String computerModel = "";
 	 private PostgresqlPersistenceManager aDBManager=null;
+	 Charset charset = Charset.forName("ISO-8859-1");
+	 
 	 ZhinuPublisher aZhinuPublisher;
 	public PublisherListener() {
 		logger = Logger.getLogger(getClass());
@@ -59,7 +61,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		logger.info("Heart received a message on topic: " + message.getTopicName()
 		+ ", from: " + message.getClientID());
 				if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_STATUS)) {
-					Charset charset = Charset.forName("ISO-8859-1");
+					
 					ByteBuf m_buffer = message.getPayload();
 					currentPulse = new JSONObject(m_buffer.toString(charset));
 					//currentPulse = new JSONObject(message.getPayload().toString(charset));
@@ -85,7 +87,6 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					}
 					 logger.info("computerModel=" + computerModel);
 				} else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE)) {
-					Charset charset = Charset.forName("ISO-8859-1");
 					//ByteBuf m_buffer = message.getPayload();
 					ByteBuf m_buffer = message.getPayload();
 					String updateMessage = m_buffer.toString(charset);
@@ -148,7 +149,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	          		
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_RESIGNAL)){
 					
-					Charset charset = Charset.forName("ISO-8859-1");
+					
 					ByteBuf m_buffer = message.getPayload();
 					
 					currentPulse = new JSONObject(m_buffer.toString(charset));
