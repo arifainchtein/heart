@@ -29,7 +29,7 @@ import io.netty.buffer.ByteBuf;
 
 public class PublisherListener  extends AbstractInterceptHandler {
 	Logger logger;
-	JSONObject currentPulse;
+	//JSONObject currentPulse;
 	 String computerModel = "";
 	 private PostgresqlPersistenceManager aDBManager=null;
 	 ZhinuPublisher aZhinuPublisher;
@@ -55,6 +55,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	    }
 	    
 	public void onPublish(InterceptPublishMessage message) {
+		JSONObject currentPulse;
 		logger.info("Heart received a message on topic: " + message.getTopicName()
 		+ ", from: " + message.getClientID());
 				if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_STATUS)) {
@@ -116,7 +117,9 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					//
 					// this messages comes from a browser
 					//	
-					JSONObject payloadJSONObject = new JSONObject(message.getPayload());
+					String string = message.getPayload();
+					logger.debug("received payload=" + string);
+					JSONObject payloadJSONObject = new JSONObject(string);
 	        		String identityPointer = payloadJSONObject.getString(TeleonomeConstants.TELEONOME_IDENTITY_LABEL);
 	        		Object value = payloadJSONObject.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
 	        		String password = payloadJSONObject.getString(TeleonomeConstants.COMMAND_REQUEST_PASSWORD);
@@ -394,6 +397,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 
 
 				}
+				currentPulse=null;
 				System.gc();
 	}
 	
