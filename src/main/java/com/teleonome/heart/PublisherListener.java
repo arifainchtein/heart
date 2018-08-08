@@ -136,9 +136,12 @@ public class PublisherListener  extends AbstractInterceptHandler {
 
 	        		JSONObject updateJSONObject =  new JSONObject();
 	        		updateJSONObject.put("Target","@On Load:Update DeneWord:Update DeneWord");
-	        		updateJSONObject.put("Value",identityPointer);
+	        		updateJSONObject.put("MutationTargetNewValue",identityPointer);
+	        		updateJSONObject.put("Value",value);
 	        		updatesArray.put(updateJSONObject);
 	        			
+	        		
+	        		
 	        		
 	        		String command="SetParameters";
 	        		String payLoad=payLoadParentJSONObject.toString();
