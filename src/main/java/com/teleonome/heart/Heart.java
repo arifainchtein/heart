@@ -14,22 +14,22 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-//import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-//import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-//import org.eclipse.paho.client.mqttv3.IMqttToken;
-//import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
-//import org.eclipse.paho.client.mqttv3.MqttCallback;
-////import org.eclipse.paho.client.mqttv3.MqttClient;
-////import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-////import org.eclipse.paho.client.mqttv3.MqttException;
-////import org.eclipse.paho.client.mqttv3.MqttMessage;
-////import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 //import org.eclipse.paho.client.mqttv3.MqttClient;
 //import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 //import org.eclipse.paho.client.mqttv3.MqttException;
 //import org.eclipse.paho.client.mqttv3.MqttMessage;
 //import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-//import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -53,11 +53,11 @@ import io.moquette.server.config.ResourceLoaderConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="14/05/2018 08:27";
+	public final static String BUILD_NUMBER="08/08/2018 15:12";
 
 	Logger logger;
 	int heartPid=0; 
-	 //MqttAsyncClient client=null;;
+	 MqttAsyncClient client=null;;
 	 PublisherListener aPublisherListener;
 	 private PostgresqlPersistenceManager aDBManager=null;
 	 
@@ -113,21 +113,14 @@ public class Heart
 			//IResourceLoader classpathLoader = new ClasspathResourceLoader();
 			//final IConfig classPathConfig = new ResourceLoaderConfig(classpathLoader);
 			
-			
-			aPublisherListener = new PublisherListener();
-			List<? extends InterceptHandler> userHandlers = Collections.singletonList(aPublisherListener);
-			
-			final Server mqttBroker = new Server();
-			mqttBroker.startServer(config, userHandlers);
-			
-			
-			
-			// 	        
-			//
-			// start a client that will process the updates from the webserver
-			//
-			String broker = "tcp://0.0.0.0:1883";
 			aDBManager = PostgresqlPersistenceManager.instance();
+			
+//			// 	        
+//			//
+//			// start a client that will receive updates fr the updates from the webserver
+//			//
+//			String broker = "tcp://0.0.0.0:1883";
+//			
 //			
 //			try {
 //				client = new MqttAsyncClient(broker, MqttAsyncClient.generateClientId(), new MqttDefaultFilePersistence());
@@ -139,6 +132,16 @@ public class Heart
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
+//			
+			
+			
+			aPublisherListener = new PublisherListener();
+			List<? extends InterceptHandler> userHandlers = Collections.singletonList(aPublisherListener);
+			
+			final Server mqttBroker = new Server();
+			mqttBroker.startServer(config, userHandlers);
+			
+			
 			
 			
 
@@ -147,32 +150,32 @@ public class Heart
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
-//					ArrayList results;
+					ArrayList results;
 					logger.warn("stopping moquette mqtt broker without restarting..");
 					mqttBroker.stopServer();
 					logger.warn("moquette mqtt broker stopped sleeping");
-//					try {
-//						Thread.sleep(5000);
-//					} catch (InterruptedException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//					try {
-//						logger.warn("about to restart heart");
-//						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
-//						//Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
-//						String data = "Restart hear command response="  +String.join(", ", results);
-//						logger.warn( data);
-//						
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						logger.warn(Utils.getStringException(e));
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					logger.warn( "About to ezit the bad instance of the heart");
-					//System.exit(0);
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					try {
+						logger.warn("about to restart heart");
+						results = Utils.executeCommand("/home/pi/Teleonome/heart/StartHeartBG.sh");
+						//Runtime.getRuntime().exec("sudo sh /home/pi/Teleonome/heart/StartHeartBG.sh");
+						String data = "Restart hear command response="  +String.join(", ", results);
+						logger.warn( data);
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						logger.warn(Utils.getStringException(e));
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					logger.warn( "About to ezit the bad instance of the heart");
+					
 				}
 			});
 
@@ -212,7 +215,7 @@ public class Heart
 //    				
 //        	}
 //        }
-//
+
 //        
 //      
 //    	

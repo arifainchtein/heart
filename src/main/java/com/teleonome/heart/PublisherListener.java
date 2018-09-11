@@ -35,11 +35,12 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	 Charset charset = Charset.forName("ISO-8859-1");
 	 
 	 ZhinuPublisher aZhinuPublisher;
-	public PublisherListener() {
+	public PublisherListener( ) {
 		logger = Logger.getLogger(getClass());
 		logger.warn("Heart started the receptor");
 		aDBManager = PostgresqlPersistenceManager.instance();
 		aZhinuPublisher = new ZhinuPublisher();
+		
 	}
 	public String getComputerModel() {
 		return computerModel;
@@ -121,33 +122,33 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					ByteBuf m_buffer = message.getPayload();
 					String string = m_buffer.toString(charset);
 					logger.debug("received payload=" + string);
-					JSONObject payloadJSONObject = new JSONObject(string);
-	        		String identityPointer = payloadJSONObject.getString(TeleonomeConstants.TELEONOME_IDENTITY_LABEL);
-	        		Object value = payloadJSONObject.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
-	        		String password = payloadJSONObject.getString(TeleonomeConstants.COMMAND_REQUEST_PASSWORD);
-	        		logger.warn("about to apply mutation identityPointer=" + identityPointer + " value=" + value);
-	        		
-	        		JSONObject payLoadParentJSONObject = new JSONObject();
-	        		JSONObject payLoadJSONObject = new JSONObject();
-	        		payLoadParentJSONObject.put("Mutation Name","UpdateControlParameters");
-	        		payLoadParentJSONObject.put("Payload", payLoadJSONObject);
-	        		JSONArray updatesArray = new JSONArray();
-	        		payLoadJSONObject.put("Updates"	, updatesArray);
-
-	        		JSONObject updateJSONObject =  new JSONObject();
-	        		updateJSONObject.put("Target","@On Load:Update DeneWord:Update DeneWord");
-	        		updateJSONObject.put("MutationTargetNewValue",identityPointer);
-	        		updateJSONObject.put("Value",value);
-	        		updatesArray.put(updateJSONObject);
-	        			
-	        		
-	        		
-	        		
-	        		String command="SetParameters";
-	        		String payLoad=payLoadParentJSONObject.toString();
-	        		
-	        		int commandId = aDBManager.requestCommandToExecute(command,payLoad);
-	          		logger.debug("sent command=" + command  + " clientId=" + message.getClientID() + " commandId=" + commandId);
+//					JSONObject payloadJSONObject = new JSONObject(string);
+//	        		String identityPointer = payloadJSONObject.getString(TeleonomeConstants.TELEONOME_IDENTITY_LABEL);
+//	        		Object value = payloadJSONObject.getString(TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
+//	        		String password = payloadJSONObject.getString(TeleonomeConstants.COMMAND_REQUEST_PASSWORD);
+//	        		logger.warn("about to apply mutation identityPointer=" + identityPointer + " value=" + value);
+//	        		
+//	        		JSONObject payLoadParentJSONObject = new JSONObject();
+//	        		JSONObject payLoadJSONObject = new JSONObject();
+//	        		payLoadParentJSONObject.put("Mutation Name","UpdateControlParameters");
+//	        		payLoadParentJSONObject.put("Payload", payLoadJSONObject);
+//	        		JSONArray updatesArray = new JSONArray();
+//	        		payLoadJSONObject.put("Updates"	, updatesArray);
+//
+//	        		JSONObject updateJSONObject =  new JSONObject();
+//	        		updateJSONObject.put("Target","@On Load:Update DeneWord:Update DeneWord");
+//	        		updateJSONObject.put("MutationTargetNewValue",identityPointer);
+//	        		updateJSONObject.put("Value",value);
+//	        		updatesArray.put(updateJSONObject);
+//	        			
+//	        		
+//	        		
+//	        		
+//	        		String command="SetParameters";
+//	        		String payLoad=payLoadParentJSONObject.toString();
+//	        		
+//	        		int commandId = aDBManager.requestCommandToExecute(command,payLoad);
+//	          		logger.debug("sent command=" + command  + " clientId=" + message.getClientID() + " commandId=" + commandId);
 	          		
 	          		
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_RESIGNAL)){
