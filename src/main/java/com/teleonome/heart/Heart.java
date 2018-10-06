@@ -31,9 +31,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.teleonome.framework.TeleonomeConstants;
+import com.teleonome.framework.denome.DenomeUtils;
+import com.teleonome.framework.denome.Identity;
+import com.teleonome.framework.exception.InvalidDenomeException;
 import com.teleonome.framework.persistence.PostgresqlPersistenceManager;
 import com.teleonome.framework.utils.Utils;
 
@@ -117,7 +121,7 @@ public class Heart
 			
 //			// 	        
 //			//
-//			// start a client that will receive updates fr the updates from the webserver
+//			// start a client that will receive updates fr the updates from the heart
 //			//
 //			String broker = "tcp://0.0.0.0:1883";
 //			
@@ -141,7 +145,8 @@ public class Heart
 			final Server mqttBroker = new Server();
 			mqttBroker.startServer(config, userHandlers);
 			
-			
+			PingThread aPingThread = new PingThread();
+			aPingThread.start();
 			
 			
 
@@ -201,6 +206,39 @@ public class Heart
 
 	}
 
+	class PingThread extends Thread{
+	     
+	    public PingThread(){
+	        setDaemon(true);
+	    }
+	    public void run(){
+	        while(true) {
+	        	logger.warn("Heart Ping ");
+	        	try {
+	        		double heartAvailableMemory = Runtime.getRuntime().freeMemory()/1024000;
+					double heartMaxMemory = Runtime.getRuntime().maxMemory()/1024000;
+					JSONObject pingInfo = new JSONObject();
+					pingInfo.put(TeleonomeConstants.HEART_PROCESS_AVAILABLE_MEMORY, heartAvailableMemory);
+					pingInfo.put(TeleonomeConstants.HEART_PROCESS_MAXIMUM_MEMORY, heartMaxMemory);
+					pingInfo.put(TeleonomeConstants.DATATYPE_TIMESTAMP_MILLISECONDS, System.currentTimeMillis());
+					
+	    			FileUtils.writeStringToFile(new File("HeartPing.info"), pingInfo.toString());
+	    		//	String webPid = Integer.parseInt(processName.split("@")[0]);
+	    			try {
+						Thread.sleep(1000*60);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		} catch (IOException e1) {
+	    			// TODO Auto-generated catch block
+	    			e1.printStackTrace();
+	    		}
+	        }
+	    }
+	}  
+	    
+	    
 //	class MyCallBack implements  MqttCallback {
 //        @Override
 //        public void connectionLost(Throwable cause) {
