@@ -37,9 +37,10 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	 ZhinuPublisher aZhinuPublisher;
 	public PublisherListener( ) {
 		logger = Logger.getLogger(getClass());
-		logger.warn("Heart started the receptor");
+		
 		aDBManager = PostgresqlPersistenceManager.instance();
 		aZhinuPublisher = new ZhinuPublisher();
+		logger.warn("Heart started the receptor and the aZhinuPublisher=" + aZhinuPublisher);
 		
 	}
 	public String getComputerModel() {
