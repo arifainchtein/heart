@@ -78,6 +78,7 @@
    <plugins>
    <plugin>
       <artifactId>maven-assembly-plugin</artifactId>
+      <version>3.1.0</version>
       <configuration>
       <outputDirectory>../../heart/</outputDirectory>
         <archive>
