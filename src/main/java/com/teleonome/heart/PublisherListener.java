@@ -33,7 +33,8 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	 String computerModel = "";
 	 private PostgresqlPersistenceManager aDBManager=null;
 	 Charset charset = Charset.forName("ISO-8859-1");
-	 
+	 int messagesReceived=0;
+	 int clientsConnected=0;
 	 ZhinuPublisher aZhinuPublisher;
 	public PublisherListener( ) {
 		logger = Logger.getLogger(getClass());
@@ -47,7 +48,8 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		return computerModel;
 	}
 	public void onConnect(InterceptConnectMessage message) {
- 		logger.info("Heart received connection from " +  message.getClientID());
+		clientsConnected++;
+ 		logger.info("Heart received connection from " +  message.getClientID() + " clientsConnected="+ clientsConnected);
 	}
 	 
 	    public void onDisconnect(InterceptDisconnectMessage msg) {
@@ -59,9 +61,10 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	    }
 	    
 	public void onPublish(InterceptPublishMessage message) {
+		messagesReceived++;
 		JSONObject currentPulse;
 		logger.info("Heart received a message on topic: " + message.getTopicName()
-		+ ", from: " + message.getClientID());
+		+ ", from: " + message.getClientID() + " messagesReceived=" + messagesReceived);
 				if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_STATUS)) {
 					
 					ByteBuf m_buffer = message.getPayload();
@@ -72,7 +75,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					// now save the file  in the heart directory
 					// so that the medula can check it
 					try {
-						FileUtils.writeStringToFile(new File("HeartTeleonome.denome"), currentPulse.toString());
+						FileUtils.writeStringToFile(new File("HeartTeleonome.denome"), currentPulse.toString(), Charset.defaultCharset());
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -113,9 +116,31 @@ public class PublisherListener  extends AbstractInterceptHandler {
 						}
 					 
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ORGANISM_STATUS)) {
+					ByteBuf m_buffer = message.getPayload();
+					String telephaton = m_buffer.toString(charset);
+					logger.debug("received message telephaton=" + telephaton);
+				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ORGANISM_IP)) {
 					
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_PULSE_STATUS_INFO)) {
-					 
+					
+				}else if(message.getTopicName().equals(TeleonomeConstants.TELEPHATON_TOPIC_ANNOUNCE)) {
+					//
+					// 
+					ByteBuf m_buffer = message.getPayload();
+					String telephatonIpAddress = m_buffer.toString(charset);
+					logger.debug("received message telephaton  announced IpAddress=" + telephatonIpAddress);
+	        		//int commandId = aDBManager.requestCommandToExecute(command,payLoad);
+					
+					String command="";
+					String commandCode="";
+					String commandCodeType="";
+					String payLoad= telephatonIpAddress;
+					String clientIp="127.0.0.1"; 
+					boolean restartRequired=false;
+	        		JSONObject commandJSONObject =  aDBManager.requestCommandToExecute( command,  commandCode, commandCodeType,   payLoad,  clientIp,  restartRequired);
+	        			
+	          		logger.debug("sent command=" + command  + " clientId=" + message.getClientID());
+
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_UPDATE_FORM_REQUEST)) {
 					//
 					// this messages comes from a browser
