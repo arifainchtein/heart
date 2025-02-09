@@ -35,6 +35,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	 Charset charset = Charset.forName("ISO-8859-1");
 	 int messagesReceived=0;
 	 int clientsConnected=0;
+	 JSONObject statsJSON = new JSONObject();
 	 ZhinuPublisher aZhinuPublisher;
 	public PublisherListener( ) {
 		logger = Logger.getLogger(getClass());
@@ -60,8 +61,17 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	    	logger.info("Heart onConnectionLost from " +  msg.getClientID());
 	    }
 	    
+	    public JSONObject getStatsJSON() {
+	    	return statsJSON;
+	    }
+	    
 	public void onPublish(InterceptPublishMessage message) {
 		messagesReceived++;
+		statsJSON.put(TeleonomeConstants.HEART_MESSAGES_RECEIVED, messagesReceived);
+		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_MILLIS, System.currentTimeMillis());
+		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_TIMESTAMP, Utils.epochToLocalTimeString(System.currentTimeMillis()));
+		
+		
 		JSONObject currentPulse;
 		logger.info("Heart received a message on topic: " + message.getTopicName()
 		+ ", from: " + message.getClientID() + " messagesReceived=" + messagesReceived);
@@ -118,7 +128,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ORGANISM_STATUS)) {
 					ByteBuf m_buffer = message.getPayload();
 					String telephaton = m_buffer.toString(charset);
-					logger.debug("received message telephaton=" + telephaton);
+					logger.debug("received message organism status=" + telephaton);
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ORGANISM_IP)) {
 					
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_PULSE_STATUS_INFO)) {

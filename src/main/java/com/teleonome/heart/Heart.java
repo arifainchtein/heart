@@ -57,7 +57,7 @@ import io.moquette.server.config.ResourceLoaderConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="10/02/2025 08:37";
+	public final static String BUILD_NUMBER="10/02/2025 09:06";
 
 	Logger logger;
 	int heartPid=0; 
@@ -217,7 +217,7 @@ public class Heart
 	        	try {
 	        		double heartAvailableMemory = Runtime.getRuntime().freeMemory()/1024000;
 					double heartMaxMemory = Runtime.getRuntime().maxMemory()/1024000;
-					JSONObject pingInfo = new JSONObject();
+					JSONObject pingInfo = aPublisherListener.getStatsJSON();
 					pingInfo.put(TeleonomeConstants.HEART_PROCESS_AVAILABLE_MEMORY, heartAvailableMemory);
 					pingInfo.put(TeleonomeConstants.HEART_PROCESS_MAXIMUM_MEMORY, heartMaxMemory);
 					pingInfo.put(TeleonomeConstants.DATATYPE_TIMESTAMP_MILLISECONDS, System.currentTimeMillis());
