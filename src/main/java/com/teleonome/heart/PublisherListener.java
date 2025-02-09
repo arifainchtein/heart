@@ -69,7 +69,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		messagesReceived++;
 		statsJSON.put(TeleonomeConstants.HEART_MESSAGES_RECEIVED, messagesReceived);
 		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_MILLIS, System.currentTimeMillis());
-		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_TIMESTAMP, Utils.epochToLocalTimeString(System.currentTimeMillis()));
+		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_TIMESTAMP, Utils.epochToLocalTimeString(System.currentTimeMillis()/1000));
 		
 		
 		JSONObject currentPulse;
