@@ -101,7 +101,14 @@ public class PublisherListener  extends AbstractInterceptHandler {
 						e.printStackTrace();
 					}
 					 logger.info("computerModel=" + computerModel);
-				} else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE)) {
+				} else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_TELEPATHON_STATUS)) {
+					//ByteBuf m_buffer = message.getPayload();
+					ByteBuf m_buffer = message.getPayload();
+					JSONObject telepathon = new JSONObject(m_buffer.toString(charset));
+					
+					//String updateMessage = charset.decode(m_buffer).toString();
+					logger.info("received HEART_TOPIC_TELEPATHON_STATUS =" + telepathon.toString(4));
+				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE)) {
 					//ByteBuf m_buffer = message.getPayload();
 					ByteBuf m_buffer = message.getPayload();
 					String updateMessage = m_buffer.toString(charset);
