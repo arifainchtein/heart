@@ -105,9 +105,11 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					//ByteBuf m_buffer = message.getPayload();
 					ByteBuf m_buffer = message.getPayload();
 					JSONObject telepathon = new JSONObject(m_buffer.toString(charset));
+					String telepathonName = telepathon.getString("Name");
+					String time = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDeneChain(telepathon, "Purpose", "Local Time", TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
 					
 					//String updateMessage = charset.decode(m_buffer).toString();
-					logger.info("received HEART_TOPIC_TELEPATHON_STATUS =" + telepathon.toString(4));
+					logger.info("received HEART_TOPIC_TELEPATHON_STATUS =" + telepathonName + " at " + time);
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE)) {
 					//ByteBuf m_buffer = message.getPayload();
 					ByteBuf m_buffer = message.getPayload();

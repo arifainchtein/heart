@@ -57,7 +57,7 @@ import io.moquette.server.config.ResourceLoaderConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="10/02/2025 20:44";
+	public final static String BUILD_NUMBER="12/02/2025 09:34";
 
 	Logger logger;
 	int heartPid=0; 
