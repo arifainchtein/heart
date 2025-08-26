@@ -461,4 +461,9 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		// TODO Auto-generated method stub
 		return "Heart Publisher Listener";
 	}
+	@Override
+	public void onSessionLoopError(Throwable error) {
+		// TODO Auto-generated method stub
+		
+	}
 }
