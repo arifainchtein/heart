@@ -54,10 +54,12 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	}
 	 
 	    public void onDisconnect(InterceptDisconnectMessage msg) {
+	    	clientsConnected--;
 	    	logger.info("Heart received onDisconnect from " +  msg.getClientID());
 	    } 
 
 	    public void onConnectionLost(InterceptConnectionLostMessage msg) {
+	    	clientsConnected--;
 	    	logger.info("Heart onConnectionLost from " +  msg.getClientID());
 	    }
 	    
@@ -70,10 +72,10 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		statsJSON.put(TeleonomeConstants.HEART_MESSAGES_RECEIVED, messagesReceived);
 		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_MILLIS, System.currentTimeMillis());
 		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_TIMESTAMP, Utils.epochToLocalTimeString(System.currentTimeMillis()/1000));
-		
+		statsJSON.put(TeleonomeConstants.HEART_CLIENTS_CONNECTED,clientsConnected);
 		
 		JSONObject currentPulse;
-		logger.info("Heart received a message on topic: " + message.getTopicName()
+		logger.info("Received, topic: " + message.getTopicName()
 		+ ", from: " + message.getClientID() + " messagesReceived=" + messagesReceived);
 				if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_STATUS)) {
 					
