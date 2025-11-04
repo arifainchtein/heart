@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="26/08/2025 14:30";
+	public final static String BUILD_NUMBER="30/09/2025 12:54";
 
 	Logger logger;
 	int heartPid=0; 
