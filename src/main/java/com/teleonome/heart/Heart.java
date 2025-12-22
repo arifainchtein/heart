@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="23/11/2025 10:51";
+	public final static String BUILD_NUMBER="22/12/2025 17:12";
 
 	Logger logger;
 	int heartPid=0; 
@@ -75,13 +75,17 @@ public class Heart
 		logger = Logger.getLogger(getClass());
 
 		try {
+			logger.warn("line 78");
 			FileUtils.writeStringToFile(new File("/home/pi/Teleonome/heart/HeartProcess.info"), processName);
+			logger.warn("line 80");
 			heartPid = Integer.parseInt(processName.split("@")[0]);
+			logger.warn("line 82");
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.warn(Utils.getStringException(e1));
 		}
+		logger.warn("line 85");
 		try {
 			FileUtils.writeStringToFile(new File("/home/pi/Teleonome/heart/HeartBuild.info"), BUILD_NUMBER);
 		} catch (IOException e1) {
