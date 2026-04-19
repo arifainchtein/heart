@@ -1,6 +1,8 @@
 package com.teleonome.heart;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -11,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import com.teleonome.framework.TeleonomeConstants;
 import com.teleonome.framework.denome.DenomeUtils;
@@ -26,6 +29,7 @@ import io.moquette.interception.messages.InterceptConnectionLostMessage;
 import io.moquette.interception.messages.InterceptDisconnectMessage;
 import io.moquette.interception.messages.InterceptPublishMessage;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 
 public class PublisherListener  extends AbstractInterceptHandler {
 	Logger logger;
@@ -79,15 +83,19 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		+ ", from: " + message.getClientID() + " messagesReceived=" + messagesReceived);
 				if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_STATUS)) {
 					
-					ByteBuf m_buffer = message.getPayload();
-					currentPulse = new JSONObject(m_buffer.toString(charset));
+//					ByteBuf m_buffer = message.getPayload();
+//					currentPulse = new JSONObject(m_buffer.toString(charset));
 					//currentPulse = new JSONObject(message.getPayload().toString(charset));
-					
+					ByteBufInputStream bis = new ByteBufInputStream(message.getPayload());
+					currentPulse = new JSONObject(new JSONTokener(bis));
 					//
 					// now save the file  in the heart directory
 					// so that the medula can check it
 					try {
-						FileUtils.writeStringToFile(new File("HeartTeleonome.denome"), currentPulse.toString(), Charset.defaultCharset());
+						//FileUtils.writeStringToFile(new File("HeartTeleonome.denome"), currentPulse.toString(), Charset.defaultCharset());
+						try (BufferedWriter bw = new BufferedWriter(new FileWriter("HeartTeleonome.denome"))) {
+						    currentPulse.write(bw); // Node-by-node streaming, no huge string
+						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -201,12 +209,14 @@ public class PublisherListener  extends AbstractInterceptHandler {
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_RESIGNAL)){
 					
 					
-					ByteBuf m_buffer = message.getPayload();
+//					ByteBuf m_buffer = message.getPayload();
+//					
+//					currentPulse = new JSONObject(m_buffer.toString(charset));
+					ByteBufInputStream bis = new ByteBufInputStream(message.getPayload());
+					currentPulse = new JSONObject(new JSONTokener(bis));
 					
-					currentPulse = new JSONObject(m_buffer.toString(charset));
 					
-					
-					JSONObject resignalInfo = new JSONObject(m_buffer.toString(charset));
+					JSONObject resignalInfo = currentPulse;
 					
 					
 					String enableNetworkMode = resignalInfo.getString("EnableNetworkMode");

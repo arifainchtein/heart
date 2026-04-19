@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="22/12/2025 17:12";
+	public final static String BUILD_NUMBER="19/04/2026 11:20";
 
 	Logger logger;
 	int heartPid=0; 
@@ -79,7 +79,7 @@ public class Heart
 			FileUtils.writeStringToFile(new File("/home/pi/Teleonome/heart/HeartProcess.info"), processName);
 			logger.warn("line 80");
 			heartPid = Integer.parseInt(processName.split("@")[0]);
-			logger.warn("line 82");
+			logger.warn("line 82, heartPid=" + heartPid);
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -115,7 +115,7 @@ public class Heart
 			configProps.put("host", "0.0.0.0");
 			configProps.put("allow_anonymous", Boolean.valueOf(true));
 			 String dbName = System.getProperty("user.dir")+  File.separator  + "heart.mapdb";
-		     configProps.setProperty(BrokerConstants.NETTY_MAX_BYTES_PROPERTY_NAME,String.valueOf(1024*1000*2));
+		     configProps.setProperty(BrokerConstants.NETTY_MAX_BYTES_PROPERTY_NAME,String.valueOf(1536*1000));
 			configProps.put(BrokerConstants.PERSISTENT_STORE_PROPERTY_NAME,dbName);
 			IConfig config = new MemoryConfig(configProps);
 			//IResourceLoader classpathLoader = new ClasspathResourceLoader();
