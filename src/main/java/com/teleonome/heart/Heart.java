@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="27/05/2026 13:01";
+	public final static String BUILD_NUMBER="30/05/2026 09:28";
 
 	Logger logger;
 	int heartPid=0; 
@@ -117,6 +117,7 @@ public class Heart
 			 String dbName = System.getProperty("user.dir")+  File.separator  + "heart.mapdb";
 		     configProps.setProperty(BrokerConstants.NETTY_MAX_BYTES_PROPERTY_NAME,String.valueOf(1536*1000));
 			//configProps.put(BrokerConstants.PERSISTENT_STORE_PROPERTY_NAME,dbName);
+			configProps.put(BrokerConstants.PERSISTENCE_ENABLED_PROPERTY_NAME, "false");
 			IConfig config = new MemoryConfig(configProps);
 			//IResourceLoader classpathLoader = new ClasspathResourceLoader();
 			//final IConfig classPathConfig = new ResourceLoaderConfig(classpathLoader);
