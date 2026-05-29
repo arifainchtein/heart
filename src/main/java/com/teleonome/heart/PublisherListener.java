@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -41,6 +43,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	 int clientsConnected=0;
 	 JSONObject statsJSON = new JSONObject();
 	 ZhinuPublisher aZhinuPublisher;
+	 private final ExecutorService fileWriter = Executors.newSingleThreadExecutor();
 	public PublisherListener( ) {
 		logger = Logger.getLogger(getClass());
 		
@@ -89,17 +92,15 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					ByteBufInputStream bis = new ByteBufInputStream(message.getPayload());
 					currentPulse = new JSONObject(new JSONTokener(bis));
 					//
-					// now save the file  in the heart directory
-					// so that the medula can check it
-					try {
-						//FileUtils.writeStringToFile(new File("HeartTeleonome.denome"), currentPulse.toString(), Charset.defaultCharset());
+					// save the file off the Netty thread so the broker is not blocked
+					final JSONObject pulseToWrite = currentPulse;
+					fileWriter.submit(() -> {
 						try (BufferedWriter bw = new BufferedWriter(new FileWriter("HeartTeleonome.denome"))) {
-						    currentPulse.write(bw); // Node-by-node streaming, no huge string
+							pulseToWrite.write(bw);
+						} catch (IOException e1) {
+							logger.warn("Failed to write HeartTeleonome.denome: " + e1.getMessage());
 						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					});
 					
 					//logger.info("currentPulse=" + currentPulse.toString(4));
 					String teleonomeName = DenomeUtils.getTeleonomeName(currentPulse);
@@ -461,7 +462,6 @@ public class PublisherListener  extends AbstractInterceptHandler {
 
 				}
 				currentPulse=null;
-				System.gc();
 	}
 	
 	  
