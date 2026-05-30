@@ -115,12 +115,20 @@ public class PublisherListener  extends AbstractInterceptHandler {
 				} else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_TELEPATHON_STATUS)) {
 					//ByteBuf m_buffer = message.getPayload();
 					ByteBuf m_buffer = message.getPayload();
-					JSONObject telepathon = new JSONObject(m_buffer.toString(charset));
-					String telepathonName = telepathon.getString("Name");
-					String time = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDeneChain(telepathon, "Purpose", "Local Time", TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
+					String s = m_buffer.toString(charset);
+					try {
+						
+						JSONObject telepathon = new JSONObject(s);
+						String telepathonName = telepathon.getString("Name");
+						String time = (String) DenomeUtils.getDeneWordAttributeByDeneWordNameFromDeneChain(telepathon, "Purpose", "Local Time", TeleonomeConstants.DENEWORD_VALUE_ATTRIBUTE);
+						
+						//String updateMessage = charset.decode(m_buffer).toString();
+						logger.info("received HEART_TOPIC_TELEPATHON_STATUS =" + telepathonName + " at " + time);
+					}catch(JSONException e) {
+						logger.warn("Line 128, receive invalid telepathon status,received:" + s);
+						logger.warn(Utils.getStringException(e));
+					}
 					
-					//String updateMessage = charset.decode(m_buffer).toString();
-					logger.info("received HEART_TOPIC_TELEPATHON_STATUS =" + telepathonName + " at " + time);
 				}else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE)) {
 					//ByteBuf m_buffer = message.getPayload();
 					ByteBuf m_buffer = message.getPayload();
