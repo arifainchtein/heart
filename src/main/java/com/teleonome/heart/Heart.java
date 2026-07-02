@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="02/07/2026 21:18";
+	public final static String BUILD_NUMBER="02/07/2026 21:19";
 
 	Logger logger;
 	int heartPid=0; 
@@ -145,6 +145,7 @@ public class Heart
 			logger.warn("line 145 about to publisher");
 			
 			aPublisherListener = new PublisherListener();
+			ogger.warn("line 147 about to publisher");
 			List<? extends InterceptHandler> userHandlers = Collections.singletonList(aPublisherListener);
 			logger.warn("line 149 about to publisher");
 			final Server mqttBroker = new Server();
