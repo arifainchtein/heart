@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="30/05/2026 12:30";
+	public final static String BUILD_NUMBER="02/07/2026 21:10";
 
 	Logger logger;
 	int heartPid=0; 
@@ -123,7 +123,7 @@ public class Heart
 			//final IConfig classPathConfig = new ResourceLoaderConfig(classpathLoader);
 			
 			aDBManager = PostgresqlPersistenceManager.instance();
-			
+			logger.warn("line 126 after dbamanager");
 //			// 	        
 //			//
 //			// start a client that will receive updates fr the updates from the heart
@@ -142,14 +142,14 @@ public class Heart
 //				e.printStackTrace();
 //			}
 //			
-			
+			logger.warn("line 145 about to publisher");
 			
 			aPublisherListener = new PublisherListener();
 			List<? extends InterceptHandler> userHandlers = Collections.singletonList(aPublisherListener);
 			
 			final Server mqttBroker = new Server();
 			mqttBroker.startServer(config, userHandlers);
-			
+			logger.warn("line 152 started server");
 			PingThread aPingThread = new PingThread();
 			aPingThread.start();
 			
