@@ -57,7 +57,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="02/07/2026 21:39";
+	public final static String BUILD_NUMBER="08/07/2026 07:52";
 
 	Logger logger;
 	int heartPid=0; 
@@ -121,7 +121,7 @@ public class Heart
 			IConfig config = new MemoryConfig(configProps);
 			//IResourceLoader classpathLoader = new ClasspathResourceLoader();
 			//final IConfig classPathConfig = new ResourceLoaderConfig(classpathLoader);
-			
+			logger.warn("line 124 before dbamanager");
 			aDBManager = PostgresqlPersistenceManager.instance();
 			logger.warn("line 126 after dbamanager");
 //			// 	        
