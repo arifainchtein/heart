@@ -22,7 +22,7 @@
     </repository>
     <repository>
         <id>teleonome-local-repo</id>
-        <url>file://${project.basedir}/local-repo</url>
+        <url>file://${basedir}/local-repo</url>
     </repository>
     <repository>
         <id>Eclipse Paho Repo</id>
