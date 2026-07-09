@@ -57,13 +57,14 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="08/07/2026 09:57";
+	public final static String BUILD_NUMBER="09/07/2026 18:22";
 
 	Logger logger;
-	int heartPid=0; 
+	int heartPid=0;
 	 MqttAsyncClient client=null;;
 	 PublisherListener aPublisherListener;
 	 private PostgresqlPersistenceManager aDBManager=null;
+	 private Server mqttBroker;
 	 
 	public Heart() {
 
@@ -148,7 +149,7 @@ public class Heart
 			logger.warn("line 147 about to publisher");
 			List<? extends InterceptHandler> userHandlers = Collections.singletonList(aPublisherListener);
 			logger.warn("line 149 about to publisher");
-			final Server mqttBroker = new Server();
+			mqttBroker = new Server();
 			mqttBroker.startServer(config, userHandlers);
 			logger.warn("line 152 started server");
 			PingThread aPingThread = new PingThread();
@@ -227,6 +228,14 @@ public class Heart
 					pingInfo.put(TeleonomeConstants.HEART_PROCESS_AVAILABLE_MEMORY, heartAvailableMemory);
 					pingInfo.put(TeleonomeConstants.HEART_PROCESS_MAXIMUM_MEMORY, heartMaxMemory);
 					pingInfo.put(TeleonomeConstants.DATATYPE_TIMESTAMP_MILLISECONDS, System.currentTimeMillis());
+					//
+					// direct thread-liveness check on Moquette's session event loops --
+					// a dead loop here is permanent (Moquette never restarts one) and
+					// means every client hashed to that shard is silently unresponsive,
+					// even though the broker process itself (and this ping) looks fine
+					//
+					pingInfo.put("sessionEventLoopCount", mqttBroker.getSessionEventLoopCount());
+					pingInfo.put("deadSessionEventLoopCount", mqttBroker.getDeadSessionEventLoopCount());
 					
 	    			FileUtils.writeStringToFile(new File("HeartPing.info"), pingInfo.toString());
 	    			
