@@ -3,7 +3,10 @@ package com.teleonome.heart;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryUsage;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +47,11 @@ import com.teleonome.framework.utils.Utils;
 import io.moquette.BrokerConstants;
 import io.moquette.interception.InterceptHandler;
 
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.mqtt.MqttMessageBuilders;
+import io.netty.handler.codec.mqtt.MqttPublishMessage;
+import io.netty.handler.codec.mqtt.MqttQoS;
+
 import io.moquette.broker.Server;
 //import io.moquette.server.config.ClasspathResourceLoader;
 import io.moquette.broker.config.IConfig;
@@ -57,7 +65,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="04/08/2026 06:46";
+	public final static String BUILD_NUMBER="05/08/2026 07:12";
 
 	Logger logger;
 	int heartPid=0;
@@ -214,9 +222,69 @@ public class Heart
 	}
 
 	class PingThread extends Thread{
-	     
+
 	    public PingThread(){
 	        setDaemon(true);
+	    }
+	    //
+	    // Self-reported leading indicator of the Metaspace/GC pressure that has
+	    // been the trigger behind Heart's publish-freeze incidents (chronic
+	    // classloading churn from Moquette's connection handling, proportional
+	    // to connection-churn volume -- see conversation 2026-08-05). Read
+	    // in-process via JMX rather than shelling out to jstat, so no sudo is
+	    // needed and Medula (a separate process) can see it just by reading
+	    // HeartPing.info like everything else here.
+	    //
+	    private double getMetaspacePercentUsed() {
+	    	for (MemoryPoolMXBean pool : ManagementFactory.getMemoryPoolMXBeans()) {
+	    		if (pool.getName().equals("Metaspace")) {
+	    			MemoryUsage usage = pool.getUsage();
+	    			long max = usage.getMax();
+	    			if (max <= 0) max = usage.getCommitted();
+	    			if (max <= 0) return -1;
+	    			return (usage.getUsed() * 100.0) / max;
+	    		}
+	    	}
+	    	return -1;
+	    }
+	    private long getFullGcCount() {
+	    	long count = 0;
+	    	boolean found = false;
+	    	for (GarbageCollectorMXBean gc : ManagementFactory.getGarbageCollectorMXBeans()) {
+	    		// old-generation / major collectors correspond to what jstat's FGC
+	    		// column reports, across the common collectors (G1 Old Generation,
+	    		// PS MarkSweep, ConcurrentMarkSweep)
+	    		String name = gc.getName().toLowerCase();
+	    		if (name.contains("old") || name.contains("marksweep")) {
+	    			found = true;
+	    			long c = gc.getCollectionCount();
+	    			if (c > 0) count += c;
+	    		}
+	    	}
+	    	return found ? count : -1;
+	    }
+	    //
+	    // Broadcast the same ping content Medula reads from HeartPing.info onto
+	    // the broker itself, so the webapp's live Heart modal can show it too --
+	    // not just an external process polling a file on disk. Published via
+	    // Server.internalPublish(), Moquette's own API for a broker-embedding
+	    // application to inject a message without a separate client connection
+	    // (so this can never hit the Paho publish-thread issue fixed elsewhere
+	    // today -- there's no client involved at all here).
+	    //
+	    private void broadcastHealthStatus(String topic, JSONObject payload) {
+	    	try {
+	    		byte[] payloadBytes = payload.toString().getBytes(StandardCharsets.UTF_8);
+	    		MqttPublishMessage msg = MqttMessageBuilders.publish()
+	    				.topicName(topic)
+	    				.qos(MqttQoS.AT_MOST_ONCE)
+	    				.retained(false)
+	    				.payload(Unpooled.wrappedBuffer(payloadBytes))
+	    				.build();
+	    		mqttBroker.internalPublish(msg, "Heart");
+	    	} catch (Exception e) {
+	    		logger.warn("Failed to broadcast " + topic + ": " + Utils.getStringException(e));
+	    	}
 	    }
 	    public void run(){
 	        while(true) {
@@ -236,8 +304,11 @@ public class Heart
 					//
 					pingInfo.put("sessionEventLoopCount", mqttBroker.getSessionEventLoopCount());
 					pingInfo.put("deadSessionEventLoopCount", mqttBroker.getDeadSessionEventLoopCount());
-					
+					pingInfo.put(TeleonomeConstants.HEART_METASPACE_PERCENT_USED, getMetaspacePercentUsed());
+					pingInfo.put(TeleonomeConstants.HEART_FULL_GC_COUNT, getFullGcCount());
+
 	    			FileUtils.writeStringToFile(new File("HeartPing.info"), pingInfo.toString());
+	    			broadcastHealthStatus(TeleonomeConstants.HEART_TOPIC_HEART_HEALTH_STATUS, pingInfo);
 	    			
 	    			
 	    		//	String webPid = Integer.parseInt(processName.split("@")[0]);
