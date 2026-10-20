@@ -75,7 +75,20 @@ public class PublisherListener  extends AbstractInterceptHandler {
 	    	return statsJSON;
 	    }
 	    
+	//
+	// moquette 0.18 retains the payload before calling the interceptor and the interceptor must
+	// release it (AbstractInterceptHandler.onPublish does). Without the release every message
+	// leaked its buffer until the broker ran out of direct memory (found on Zhinu 2026-10-20).
+	//
 	public void onPublish(InterceptPublishMessage message) {
+		try {
+			handlePublish(message);
+		} finally {
+			super.onPublish(message);
+		}
+	}
+
+	private void handlePublish(InterceptPublishMessage message) {
 		messagesReceived++;
 		statsJSON.put(TeleonomeConstants.HEART_MESSAGES_RECEIVED, messagesReceived);
 		statsJSON.put(TeleonomeConstants.HEART_LAST_MESSAGE_MILLIS, System.currentTimeMillis());
