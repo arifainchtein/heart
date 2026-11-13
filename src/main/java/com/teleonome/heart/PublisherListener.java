@@ -48,11 +48,57 @@ public class PublisherListener  extends AbstractInterceptHandler {
 		logger = Logger.getLogger(getClass());
 		
 		aDBManager = PostgresqlPersistenceManager.instance();
-		logger.warn("Heart started the receptor and the aZhinuPublisher=" + aZhinuPublisher);
-		aZhinuPublisher = new ZhinuPublisher();
-		logger.warn("Heart started the receptor and the aZhinuPublisher=" + aZhinuPublisher);
+		// no ZhinuPublisher yet: the Denome decides (see updateZhinuPublisher, on every Status)
+		logger.warn("Heart started the receptor");
 		
 	}
+	//
+	// The Heart forwards AsyncCycleUpdate to Zhinu (chilhuacle.info) only when its Teleonome's Denome has the SFTP
+	// publisher microcontroller (2026-11-13, Ari: the Denome decides what a Teleonome does, not a property file).
+	// Before, every Heart connected at start, all as client "Ra": Annabelle, Cleotilde, the Factory... kicked
+	// each other off the broker. Looked at on every Status (the Hypothalamus's pulse = the live Denome); until the
+	// first Status nothing connects. If the SFTP publisher leaves a running Denome, forwarding stops at once and the
+	// connection ends at the Heart's next restart (ZhinuPublisher has no close). It connects under the Teleonome's own
+	// name, which Zhinu's Heart reads as the sender.
+	//
+	static final String SFTP_PUBLISHER_CLASS = "com.teleonome.framework.microcontroller.sftppublisher.SFTPPublisherMicroController";
+	boolean zhinuWanted = false;
+
+	private void updateZhinuPublisher(JSONObject pulse) {
+		boolean wanted = hasSFTPPublisher(pulse);
+		if (wanted && aZhinuPublisher == null) {
+			String teleonomeName = DenomeUtils.getTeleonomeName(pulse);
+			aZhinuPublisher = new ZhinuPublisher(teleonomeName);
+			logger.warn("The Denome has the SFTP publisher: forwarding AsyncCycleUpdate to Zhinu as " + teleonomeName);
+		} else if (!wanted && zhinuWanted) {
+			logger.warn("The Denome no longer has the SFTP publisher: no more forwarding to Zhinu");
+		}
+		zhinuWanted = wanted;
+	}
+
+	private boolean hasSFTPPublisher(JSONObject pulse) {
+		try {
+			org.json.JSONArray nuclei = pulse.getJSONObject("Denome").getJSONArray("Nuclei");
+			for (int i = 0; i < nuclei.length(); i++) {
+				if (!nuclei.getJSONObject(i).optString("Name").equals(TeleonomeConstants.NUCLEI_INTERNAL)) continue;
+				org.json.JSONArray chains = nuclei.getJSONObject(i).getJSONArray("DeneChains");
+				for (int j = 0; j < chains.length(); j++) {
+					if (!chains.getJSONObject(j).optString("Name").equals(TeleonomeConstants.DENECHAIN_COMPONENTS)) continue;
+					org.json.JSONArray denes = chains.getJSONObject(j).optJSONArray("Denes");
+					for (int k = 0; denes != null && k < denes.length(); k++) {
+						org.json.JSONArray words = denes.getJSONObject(k).optJSONArray("DeneWords");
+						for (int w = 0; words != null && w < words.length(); w++) {
+							if (SFTP_PUBLISHER_CLASS.equals(words.getJSONObject(w).optString("Value"))) return true;
+						}
+					}
+				}
+			}
+		} catch (org.json.JSONException e) {
+			logger.warn("could not look for the SFTP publisher in the pulse: " + e.getMessage());
+		}
+		return false;
+	}
+
 	public String getComputerModel() {
 		return computerModel;
 	}
@@ -117,6 +163,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					});
 					
 					//logger.info("currentPulse=" + currentPulse.toString(4));
+					updateZhinuPublisher(currentPulse);
 					String teleonomeName = DenomeUtils.getTeleonomeName(currentPulse);
 					 Identity identity = new Identity(teleonomeName,TeleonomeConstants.NUCLEI_INTERNAL, TeleonomeConstants.DENECHAIN_DESCRIPTIVE, TeleonomeConstants.DENE_COMPUTER_INFO, TeleonomeConstants.DENEWORD_COMPUTER_MODEL);
 					 try {
@@ -150,7 +197,7 @@ public class PublisherListener  extends AbstractInterceptHandler {
 					
 					//String updateMessage = charset.decode(m_buffer).toString();
 					logger.info("received HEART_TOPIC_ASYNC_CYCLE_UPDATE =" + updateMessage);
-					aZhinuPublisher.publish(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE, updateMessage);
+					if (zhinuWanted && aZhinuPublisher != null) aZhinuPublisher.publish(TeleonomeConstants.HEART_TOPIC_ASYNC_CYCLE_UPDATE, updateMessage);
 				} else if(message.getTopicName().equals(TeleonomeConstants.HEART_TOPIC_BLINK)) {
 					 try {
 						 //

@@ -86,7 +86,8 @@ public class Heart
 
 		try {
 			logger.warn("line 78");
-			FileUtils.writeStringToFile(new File("/home/pi/Teleonome/heart/HeartProcess.info"), processName);
+			// next to the Heart (its directory: /home/pi/Teleonome/heart on a Pi, the Factory's own heart folder elsewhere)
+			FileUtils.writeStringToFile(new File(com.teleonome.framework.utils.Utils.getLocalDirectory() + "HeartProcess.info"), processName);
 			logger.warn("line 80");
 			heartPid = Integer.parseInt(processName.split("@")[0]);
 			logger.warn("line 82, heartPid=" + heartPid);
