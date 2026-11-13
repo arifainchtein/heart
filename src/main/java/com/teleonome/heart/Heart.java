@@ -65,7 +65,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="20/10/2026 15:57";
+	public final static String BUILD_NUMBER="13/11/2026 14:18";
 
 	Logger logger;
 	int heartPid=0;
@@ -118,8 +118,11 @@ public class Heart
 
 			Properties configProps = new Properties();
 
-			configProps.put("port", Integer.toString(1883));
-			configProps.put("websocket_port", Integer.toString(9999));
+			// 1883 and 9999 unless lib/app.properties says heartPort= / heartWebsocketPort= (the Factory Teleonome
+			// on factory2 shares the machine with FactoryHeart, which has 1883)
+			configProps.put("port", Integer.toString(com.teleonome.framework.utils.HeartPorts.mqttPort()));
+			configProps.put("websocket_port", Integer.toString(com.teleonome.framework.utils.HeartPorts.websocketPort()));
+			logger.warn("Heart ports: MQTT " + com.teleonome.framework.utils.HeartPorts.mqttPort() + ", websocket " + com.teleonome.framework.utils.HeartPorts.websocketPort());
 
 			configProps.put("host", "0.0.0.0");
 			configProps.put("allow_anonymous", Boolean.valueOf(true));
