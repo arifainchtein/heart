@@ -65,7 +65,7 @@ import io.moquette.broker.config.MemoryConfig;
  */
 public class Heart 
 {
-	public final static String BUILD_NUMBER="13/11/2026 14:18";
+	public final static String BUILD_NUMBER="13/11/2026 15:59";
 
 	Logger logger;
 	int heartPid=0;
@@ -78,7 +78,8 @@ public class Heart
 
 		String processName = ManagementFactory.getRuntimeMXBean().getName();
 
-		String fileName =  "/home/pi/Teleonome/lib/Log4J.properties";
+		// the Pis keep it in /home/pi/Teleonome/lib; elsewhere (the Factory Teleonome, /home/teleonome/Teleonome) the lib next to where it runs (the Heart runs in Teleonome/heart)
+		String fileName =  new java.io.File("/home/pi/Teleonome/lib/Log4J.properties").isFile() ? "/home/pi/Teleonome/lib/Log4J.properties" : com.teleonome.framework.utils.Utils.getLocalDirectory() + "../lib/Log4J.properties";
 		System.out.println("reading log4j file at " + fileName);
 		PropertyConfigurator.configure(fileName);
 		logger = Logger.getLogger(getClass());
